@@ -26,8 +26,8 @@
 // Ejemplo: const TAX_RATE = 0.19;
 //          const CURRENCY = "USD";
 //          const DOMAIN_NAME = "Mi Dominio";
-const DOMAIN_NAME = "Mi Dominio";
-const VALUE_LABEL = "valor"; // Ej: "precio", "cantidad", "duración"
+const DOMAIN_NAME = "Plataforma de Salud Mental";
+const VALUE_LABEL = "nivel de progreso"; // escala 1–10 // Ej: "precio", "cantidad", "duración"
 
 // TODO: Define un array con al menos 5 elementos de tu dominio.
 // Cada elemento debe ser un objeto con propiedades relevantes.
@@ -37,8 +37,13 @@ const VALUE_LABEL = "valor"; // Ej: "precio", "cantidad", "duración"
 //   { id: 2, name: "1984",        category: "distopía",   value: 12,  active: true },
 //   ...
 // ];
-const items = [
-  // TODO: Agrega tus elementos aquí
+ //Array de pacientes:
+const patients = [
+  { id: 1, name: "Juan Pérez", category: "paciente", value: 7, active: true, therapist: "Dr. Esteban" },
+  { id: 2, name: "María López", category: "paciente", value: 4, active: true, therapist: "Dra. Torres" },
+  { id: 3, name: "Carlos Gómez", category: "paciente", value: 9, active: false, therapist: "Dr. Esteban" },
+  { id: 4, name: "Ana Torres", category: "paciente", value: 6, active: true, therapist: "Dra. Ramírez" },
+  { id: 5, name: "Luis Ramírez", category: "paciente", value: 3, active: false, therapist: "Dr. Esteban" }
 ];
 
 // ============================================
@@ -57,13 +62,15 @@ const items = [
 // const formatItem = (medicine) =>
 //   `💊 ${medicine.name} — Stock: ${medicine.stock} — $${medicine.price}`;
 
-const formatItem = (item) => {
+const formatItem = (patient) => {
+  return `🧑‍⚕️ ${patient.name} [${patient.category}] — ${VALUE_LABEL}: ${patient.value} — Activo: ${patient.active ? "Sí" : "No"}`;
+};
   // TODO: Implementar usando template literals
   // 1. Incluir el nombre del elemento
   // 2. Incluir la categoría o tipo
   // 3. Incluir el valor numérico relevante
-  return `${item.name}`; // TODO: Expandir este template
-};
+  // TODO: Expandir este template
+
 
 // ============================================
 // SECCIÓN 3: Función de cálculo (pura)
@@ -80,9 +87,10 @@ const formatItem = (item) => {
 // const calculateValue = (price, quantity, discountPct = 0) =>
 //   +(price * quantity * (1 - discountPct / 100)).toFixed(2);
 
-const calculateValue = (baseValue, factor = 1) => {
-  // TODO: Implementar el cálculo relevante para tu dominio
-  return baseValue * factor;
+const calculateValue = (progressLevel, effortFactor = 1) => {
+  // Función pura: mismo input → mismo output
+  // Calcula un índice ajustado de progreso
+  return +(progressLevel * effortFactor).toFixed(2);
 };
 
 // ============================================
@@ -101,10 +109,12 @@ const calculateValue = (baseValue, factor = 1) => {
 // Ejemplo (Gimnasio): verificar si el miembro está activo
 // const isValid = (member) => member.active === true;
 
-const isValid = (item) => {
-  // TODO: Implementar la condición de validez de tu dominio
-  return item.active === true;
-};
+const isValid = (patient) => {
+  return patient.active === true;
+}; 
+// Ejemplos de uso:
+console.log(isValid({ name: "Juan", active: true }));   // true
+console.log(isValid({ name: "María", active: false })); // false
 
 // ============================================
 // SECCIÓN 5: Función con parámetro por defecto
@@ -121,12 +131,21 @@ const isValid = (item) => {
 // const formatPrice = (price, currency = "USD", showTax = false) =>
 //   showTax ? `${currency} ${(price * 1.19).toFixed(2)}` : `${currency} ${price.toFixed(2)}`;
 
-const formatWithDefault = (value, label = VALUE_LABEL, currency = "") => {
-  // TODO: Implementar con parámetros por defecto relevantes al dominio
+const formatWithDefault = (value, label = VALUE_LABEL, currency = "USD") => {
   return currency
     ? `${label}: ${currency} ${value}`
     : `${label}: ${value}`;
 };
+
+// Ejemplos de uso:
+console.log(formatWithDefault(100)); 
+// 👉 "nivel de progreso: USD 100"
+
+console.log(formatWithDefault(250, "Costo", "COP")); 
+// 👉 "Costo: COP 250"
+
+console.log(formatWithDefault(75, "Puntaje")); 
+// 👉 "Puntaje: USD 75"
 
 // ============================================
 // SECCIÓN 6: Reporte usando las funciones

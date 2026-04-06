@@ -20,11 +20,14 @@
 // - Un libro, medicamento, miembro, estudiante, producto, etc.
 // - Incluye: nombre, estado, valor numérico, tipo (string), y alguna propiedad opcional
 
-const elementName = null;           // TODO: nombre del elemento (string)
-const elementStatus = null;         // TODO: estado actual (string: "active", "inactive", etc.)
-const elementValue = null;          // TODO: valor numérico para clasificar (ocupación, stock, puntaje…)
-const elementType = null;           // TODO: tipo o categoría (string)
-const elementInfo = null;           // TODO: objeto con información adicional opcional (puede ser null)
+const elementName = "Juan perez"         // TODO: nombre del elemento (string)
+const elementStatus = "Active"        // TODO: estado actual (string: "active", "inactive", etc.)
+const elementValue =   7       // TODO: valor numérico para clasificar (ocupación, stock, puntaje…)
+const elementType =  "Paciente"       // TODO: tipo o categoría (string)
+const elementInfo =  {age: 29,
+  diagnosis: "ansiedad generalizada",
+  lastSession: "2026-04-01",
+  therapist: "Dr Esteban" };      // TODO: objeto con información adicional opcional (puede ser null)
 
 // ============================================
 // SECCIÓN 2: Clasificación con if / else if / else
@@ -42,6 +45,15 @@ const elementInfo = null;           // TODO: objeto con información adicional o
 // }
 
 let classification = "Sin clasificar"; // TODO: implementar if/else if/else
+    if (elementValue >= 8) {
+  classification = "Progreso alto";          // paciente con gran avance
+} else if (elementValue >= 5) {
+  classification = "Progreso medio";         // paciente en proceso estable
+} else {
+  classification = "Progreso bajo";          // paciente necesita más apoyo
+}
+
+console.log("Clasificación del paciente:", classification);
 
 // ============================================
 // SECCIÓN 3: Estado binario con operador ternario
@@ -50,7 +62,13 @@ let classification = "Sin clasificar"; // TODO: implementar if/else if/else
 // TODO: Usa el ternario para determinar un estado de dos opciones.
 // Ejemplo: const statusLabel = elementStatus === "active" ? "Activo" : "Inactivo";
 
-const statusLabel = ""; // TODO: implementar con ternario
+// SECCIÓN 3: Estado binario con operador ternario
+
+const statusLabel = elementStatus === "active" ? "Activo en la plataforma" : "Inactivo en la plataforma";
+
+console.log("Estado del paciente:", statusLabel);
+
+
 
 // ============================================
 // SECCIÓN 4: Tipo con switch
@@ -64,7 +82,29 @@ const statusLabel = ""; // TODO: implementar con ternario
 //   default: typeLabel = "Tipo desconocido";
 // }
 
-let typeLabel = "Sin tipo"; // TODO: implementar con switch
+// SECCIÓN 4: Tipo con switch
+
+let typeLabel = "Sin tipo";
+
+switch (elementType) {
+  case "paciente":
+    typeLabel = "Usuario en tratamiento";
+    break;
+  case "terapeuta":
+    typeLabel = "Profesional de la salud";
+    break;
+  case "sesión":
+    typeLabel = "Sesión de terapia";
+    break;
+  case "recurso":
+    typeLabel = "Material de apoyo";
+    break;
+  default:
+    typeLabel = "Tipo desconocido";
+}
+
+console.log("Tipo del elemento:", typeLabel);
+
 
 // ============================================
 // SECCIÓN 5: Valor por defecto con ??
@@ -73,8 +113,14 @@ let typeLabel = "Sin tipo"; // TODO: implementar con switch
 // TODO: Usa ?? para obtener un valor de fallback cuando sea null o undefined.
 // Ejemplo: const displayName = elementName ?? "Sin nombre";
 
-const displayName = "";      // TODO: elementName ?? "Sin nombre"
-const infoDetail = "";       // TODO: elementInfo?.detail ?? "Sin información adicional"
+// SECCIÓN 5: Valor por defecto con ??
+
+const displayName = elementName ?? "Sin nombre";  
+const infoDetail = elementInfo?.detail ?? "Sin información adicional";
+
+console.log("Nombre para mostrar:", displayName);
+console.log("Detalle adicional:", infoDetail);
+
 
 // ============================================
 // SECCIÓN 6: Acceso seguro con ?.
@@ -83,7 +129,12 @@ const infoDetail = "";       // TODO: elementInfo?.detail ?? "Sin información a
 // TODO: Accede de forma segura a una propiedad de elementInfo.
 // Ejemplo: const location = elementInfo?.location ?? "Ubicación no especificada";
 
-const safeProperty = ""; // TODO: elementInfo?.tuPropiedad ?? "valor por defecto"
+// SECCIÓN 6: Acceso seguro con ?.
+
+const safeProperty = elementInfo?.diagnosis ?? "Diagnóstico no especificado";
+
+console.log("Acceso seguro a propiedad:", safeProperty);
+
 
 // ============================================
 // SECCIÓN 7: Ficha de salida

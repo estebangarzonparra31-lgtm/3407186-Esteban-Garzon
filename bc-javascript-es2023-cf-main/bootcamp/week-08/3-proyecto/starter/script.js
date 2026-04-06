@@ -32,7 +32,11 @@ const VALUE_LABEL = "elementos";     // TODO: Cambiar por unidad de tu dominio
 // Restaurante: { id, name, price, category, available: true }
 
 const items = [
-  // TODO: Agrega al menos 5 objetos de tu dominio
+  { id: 1, name: "Pizza Margarita", price: 25, category: "Italiana", available: true, calories: 800, chef: "Carlos" },
+  { id: 2, name: "Hamburguesa Clásica", price: 18, category: "Americana", available: true, calories: 950, chef: "María" },
+  { id: 3, name: "Sushi Roll", price: 30, category: "Japonesa", available: false, calories: 400, chef: "Kenji" },
+  { id: 4, name: "Ensalada César", price: 15, category: "Saludable", available: true, calories: 350, chef: "Laura" },
+  { id: 5, name: "Taco al Pastor", price: 12, category: "Mexicana", available: true, calories: 600, chef: "José" }
 ];
 
 // ============================================
@@ -44,8 +48,8 @@ const items = [
  * @param {Object} newItem - Elemento a agregar
  */
 const addItem = (newItem) => {
-  // TODO: Usar push para agregar newItem al array items
-  // console.log(`Agregado: ${newItem.name}`);
+  items.push(newItem);
+  console.log(`Agregado: ${newItem.name}`);
 };
 
 /**
@@ -53,8 +57,11 @@ const addItem = (newItem) => {
  * @returns {Object} El elemento eliminado
  */
 const removeLastItem = () => {
-  // TODO: Usar pop para eliminar y retornar el último elemento
-  // Guardar el resultado en una variable y mostrar el nombre
+  const removed = items.pop();
+  if (removed) {
+    console.log(`Eliminado: ${removed.name}`);
+  }
+  return removed;
 };
 
 /**
@@ -62,8 +69,8 @@ const removeLastItem = () => {
  * @param {Object} priorityItem - Elemento a agregar con prioridad
  */
 const addPriorityItem = (priorityItem) => {
-  // TODO: Usar unshift para agregar priorityItem al inicio de items
-  // console.log(`Elemento prioritario agregado: ${priorityItem.name}`);
+  items.unshift(priorityItem);
+  console.log(`Elemento prioritario agregado: ${priorityItem.name}`);
 };
 
 /**
@@ -71,8 +78,11 @@ const addPriorityItem = (priorityItem) => {
  * @param {number} index - Posición del elemento a eliminar
  */
 const removeByIndex = (index) => {
-  // TODO: Usar splice para eliminar 1 elemento en la posición index
-  // Mostrar el nombre del elemento eliminado
+  const removed = items.splice(index, 1)[0];
+  if (removed) {
+    console.log(`Eliminado por índice: ${removed.name}`);
+  }
+  return removed;
 };
 
 /**
@@ -80,9 +90,7 @@ const removeByIndex = (index) => {
  * @returns {Array} Array de elementos activos
  */
 const getActiveItems = () => {
-  // TODO: Usar filter para retornar solo los elementos con la propiedad
-  // booleana en true (ajusta el nombre de la propiedad a tu dominio)
-  return [];
+  return items.filter(item => item.available === true);
 };
 
 /**
@@ -91,8 +99,7 @@ const getActiveItems = () => {
  * @returns {Object|undefined} El elemento encontrado o undefined
  */
 const findByName = (name) => {
-  // TODO: Usar find para retornar el primer elemento cuyo name coincida
-  return null;
+  return items.find(item => item.name === name);
 };
 
 /**
@@ -101,12 +108,9 @@ const findByName = (name) => {
  * @returns {string} Texto formateado
  */
 const formatItem = (item) => {
-  // TODO: Retornar un string con la información relevante del elemento
-  // Usar template literals y mostrar las propiedades más importantes
-  // Ejemplo (adaptar al dominio):
-  // return `[${item.id}] ${item.name} — ...propiedades...`;
-  return `[${item.id}] ${item.name}`;
+  return `[${item.id}] ${item.name} — ${VALUE_LABEL}: ${item.price ?? item.value} — Disponible: ${item.available ? "Sí" : "No"}`;
 };
+
 
 // ============================================
 // 3. REPORTE
@@ -118,50 +122,56 @@ console.log(`${"=".repeat(50)}\n`);
 
 // Estado inicial
 console.log(`📋 Inventario inicial (${items.length} ${VALUE_LABEL}):`);
-// TODO: Usar forEach para mostrar cada elemento con formatItem
 items.forEach((item) => {
   console.log(`  ${formatItem(item)}`);
 });
 
 console.log("\n--- Operaciones de mutación ---\n");
 
-// TODO: Crear un nuevo elemento de tu dominio y usar addItem para agregarlo
-// Ejemplo: addItem({ id: 6, name: "Nuevo Elemento", ..., active: true });
+// Crear un nuevo elemento y agregarlo
+addItem({ id: 6, name: "Nuevo Platillo", price: 20, category: "Especial", available: true, calories: 500, chef: "Invitado" });
 
-// TODO: Usar addPriorityItem para agregar un elemento prioritario
-// Ejemplo: addPriorityItem({ id: 0, name: "Elemento Prioritario", ..., active: true });
+// Agregar un elemento prioritario
+addPriorityItem({ id: 0, name: "Platillo VIP", price: 50, category: "Premium", available: true, calories: 700, chef: "Chef Estrella" });
 
-// TODO: Usar removeByIndex para eliminar un elemento del medio
-// Ejemplo: removeByIndex(2);
+// Eliminar un elemento del medio (ejemplo índice 2)
+removeByIndex(2);
 
-// TODO: Usar removeLastItem para quitar el último elemento
+// Eliminar el último elemento
+removeLastItem();
 
 console.log("\n--- Inventario después de mutaciones ---\n");
-// TODO: Mostrar el inventario actualizado con forEach + formatItem
 items.forEach((item) => {
   console.log(`  ${formatItem(item)}`);
 });
 
 console.log("\n--- Búsqueda y filtrado ---\n");
 
-// TODO: Usar find para buscar un elemento específico por nombre
-// Mostrar el resultado
+// Buscar un elemento por nombre
+const buscado = findByName("Pizza Margarita");
+console.log(buscado ? `Encontrado: ${formatItem(buscado)}` : "No encontrado");
 
-// TODO: Usar getActiveItems() y mostrar cuántos están activos
+// Mostrar cuántos están activos
+const activos = getActiveItems();
+console.log(`Activos: ${activos.length} / ${items.length}`);
 
-// TODO: Crear un snapshot inmutable con spread [...items]
-// y agregar un elemento extra sin modificar items
+console.log("\n--- Snapshot inmutable ---\n");
+const snapshot = [...items, { id: 99, name: "Extra Snapshot", price: 10, category: "Test", available: true }];
+console.log("Snapshot creado sin modificar items originales:");
+snapshot.forEach((item) => console.log(`  ${formatItem(item)}`));
+
 console.log("\n--- Transformación con map ---\n");
 
-// TODO: Usar map para crear un array de solo los nombres de los elementos
-// Mostrar los nombres
+// Array de nombres
+const nombres = items.map(item => item.name);
+console.log("Nombres:", nombres);
 
-// TODO: Usar map para crear un array con alguna propiedad numérica transformada
-// (ej: precios con descuento, cantidades en otra unidad, etc.)
+// Precios con descuento del 10%
+const preciosConDescuento = items.map(item => +(item.price * 0.9).toFixed(2));
+console.log("Precios con descuento:", preciosConDescuento);
 
 console.log("\n--- Resumen final ---\n");
 console.log(`Total en inventario: ${items.length} ${VALUE_LABEL}`);
-// TODO: mostrar total de activos vs total general
 const activeCount = getActiveItems().length;
 console.log(`Activos: ${activeCount} | Inactivos: ${items.length - activeCount}`);
 

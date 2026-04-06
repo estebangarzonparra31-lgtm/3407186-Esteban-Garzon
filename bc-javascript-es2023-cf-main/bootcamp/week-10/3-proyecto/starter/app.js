@@ -17,8 +17,8 @@
 // ============================================
 
 // TODO: Renombrar con el nombre de tu dominio (en inglés, UPPER_SNAKE_CASE)
-const DOMAIN_NAME = "Mi Aplicación";
-const VALUE_LABEL = "elementos";
+const DOMAIN_NAME = "Salud mental";
+const VALUE_LABEL = "medicamentos";
 
 // TODO: Ajustar al límite razonable para tu dominio
 // Usa separadores numéricos (ES2021): 1_000, 10_000
@@ -43,31 +43,64 @@ const MAX_ITEMS = 1_000;
 // - Banco:         { id, owner, type, balance, rate, active, creditLimit? }
 
 const items = [
-  // TODO: Reemplazar con objetos de tu dominio
   {
     id: 1,
-    name: "Elemento 1",
-    value: 100,
-    active: true,
-    category: "tipo-a",
+    name: "Juan Pérez",
+    age: 32,
+    progressLevel: 7,          // numérica
+    active: true,              // booleana
+    category: "paciente",
+    therapist: "Dr. Esteban",  // extra
   },
   {
     id: 2,
-    name: "Elemento 2",
-    value: 200,
+    name: "María López",
+    age: 28,
+    progressLevel: 4,
     active: true,
-    category: "tipo-b",
-    notes: "Propiedad opcional de ejemplo",
+    category: "paciente",
+    therapist: "Dra. Torres",
+    notes: "Ansiedad leve",    // opcional
   },
   {
     id: 3,
-    name: "Elemento 3",
-    value: 150,
+    name: "Carlos Gómez",
+    age: 40,
+    progressLevel: 9,
     active: false,
-    category: "tipo-a",
+    category: "paciente",
+    therapist: "Dr. Esteban",
   },
-  // TODO: Agregar al menos 3 objetos más (mínimo 6 en total)
+  {
+    id: 4,
+    name: "Ana Torres",
+    age: 35,
+    progressLevel: 6,
+    active: true,
+    category: "paciente",
+    therapist: "Dra. Ramírez",
+  },
+  {
+    id: 5,
+    name: "Luis Ramírez",
+    age: 30,
+    progressLevel: 3,
+    active: false,
+    category: "paciente",
+    therapist: "Dr. Esteban",
+    notes: "En seguimiento",   // opcional
+  },
+  {
+    id: 6,
+    name: "Sofía Martínez",
+    age: 27,
+    progressLevel: 8,
+    active: true,
+    category: "paciente",
+    therapist: "Dra. Torres",
+  }
 ];
+  // TODO: Agregar al menos 3 objetos más (mínimo 6 en total)
 
 // ============================================
 // SECCIÓN 3: Funciones CRUD (Semanas 07–08)
@@ -78,10 +111,12 @@ const items = [
  * @param {Object} item - El elemento a agregar
  */
 const addItem = (item) => {
-  // TODO: Implementar
-  // 1. Verificar que no supere MAX_ITEMS (usar items.length)
-  // 2. Agregar el item al array con .push()
-  // 3. Mostrar confirmación con console.log y template literal
+  if (items.length >= MAX_ITEMS) {
+    console.log(`❌ No se pueden agregar más de ${MAX_ITEMS} ${VALUE_LABEL}.`);
+    return;
+  }
+  items.push(item);
+  console.log(`✅ Agregado: [${item.id}] ${item.name}`);
 };
 
 /**
@@ -90,8 +125,7 @@ const addItem = (item) => {
  * @returns {Object|undefined} - El elemento encontrado o undefined
  */
 const findById = (id) => {
-  // TODO: Implementar usando .find()
-  return null;
+  return items.find(item => item.id === id);
 };
 
 /**
@@ -99,8 +133,7 @@ const findById = (id) => {
  * @returns {Object[]}
  */
 const getActive = () => {
-  // TODO: Implementar usando .filter() con la propiedad booleana
-  return [];
+  return items.filter(item => item.active);
 };
 
 /**
@@ -110,9 +143,9 @@ const getActive = () => {
  * @returns {Object[]}
  */
 const filterByField = (field, value) => {
-  // TODO: Implementar usando .filter()
-  return [];
+  return items.filter(item => item[field] === value);
 };
+
 
 // ============================================
 // SECCIÓN 4: Funciones de Análisis (Semanas 08–09)
@@ -125,11 +158,9 @@ const filterByField = (field, value) => {
  * @returns {Object[]} - Nuevo array con el elemento actualizado
  */
 const updateItem = (id, changes) => {
-  // TODO: Implementar
-  // 1. Usar .map() para crear un nuevo array
-  // 2. Para el item con el id buscado: retornar { ...item, ...changes }
-  // 3. Para los demás: retornar el item sin cambios
-  return items.map((item) => item); // reemplazar esta línea
+  return items.map(item =>
+    item.id === id ? { ...item, ...changes } : item
+  );
 };
 
 /**
@@ -138,12 +169,16 @@ const updateItem = (id, changes) => {
  * @returns {{ min: number, max: number, avg: number, total: number }}
  */
 const calculateStats = (field) => {
-  // TODO: Implementar
-  // 1. Extraer los valores numéricos con Object.values o .map()
-  // 2. Calcular: min (Math.min), max (Math.max), avg (sum/length), total (sum)
-  // Pista: const values = items.map(i => i[field]);
-  return { min: 0, max: 0, avg: 0, total: 0 };
+  const values = items.map(i => i[field]).filter(v => typeof v === "number");
+
+  const total = values.reduce((acc, v) => acc + v, 0);
+  const avg = total / values.length;
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+
+  return { min, max, avg, total };
 };
+
 
 // ============================================
 // SECCIÓN 5: Funciones de Display (Semanas 04–07)
@@ -155,11 +190,9 @@ const calculateStats = (field) => {
  * @returns {string}
  */
 const formatItem = (item) => {
-  // TODO: Implementar usando template literals
-  // 1. Usar .padEnd() o .padStart() para alinear columnas
-  // 2. Usar ?? y ?. para propiedades opcionales
-  // 3. Retornar string (NO hacer console.log aquí)
-  return `[${item.id}] ${item.name}`;
+  // Usamos template literals y padEnd para alinear columnas
+  // Usamos ?? para propiedades opcionales
+  return `[${String(item.id).padEnd(2)}] ${item.name.padEnd(15)} | Edad: ${String(item.age).padEnd(2)} | Progreso: ${item.progressLevel} | Activo: ${item.active ? "Sí" : "No"} | Terapeuta: ${item.therapist ?? "N/A"} ${item.notes ? "| Nota: " + item.notes : ""}`;
 };
 
 /**
@@ -167,24 +200,37 @@ const formatItem = (item) => {
  * Usa: Object.entries, forEach, filter, map, calculateStats
  */
 const buildReport = () => {
-  // TODO: Implementar
-  // 1. Cabecera: título del dominio con template literal
-  // 2. Listado completo usando formatItem + forEach
-  // 3. Sección de activos vs inactivos (getActive)
-  // 4. Estadísticas con calculateStats para la propiedad numérica
-  // 5. Propiedades del primer elemento con Object.entries
-  // 6. Pie de reporte con conteo total
-  console.log(`Reporte de ${DOMAIN_NAME}`);
+  console.log(`\n📊 Reporte de ${DOMAIN_NAME}`);
   console.log("=".repeat(40));
-  items.forEach((item) => console.log(formatItem(item)));
+
+  // 1. Listado completo
+  console.log("\n📋 Listado de pacientes:");
+  items.forEach(item => console.log(formatItem(item)));
+
+  // 2. Activos vs inactivos
+  const activeItems = getActive();
+  console.log(`\n✅ Activos: ${activeItems.length} | ❌ Inactivos: ${items.length - activeItems.length}`);
+
+  // 3. Estadísticas de progreso
+  const stats = calculateStats("progressLevel");
+  console.log(`\n📈 Estadísticas de progreso:`);
+  console.log(`Min: ${stats.min}, Max: ${stats.max}, Promedio: ${stats.avg.toFixed(2)}, Total: ${stats.total}`);
+
+  // 4. Propiedades del primer elemento
+  console.log("\n🔍 Propiedades del primer paciente:");
+  Object.entries(items[0]).forEach(([key, val]) => {
+    console.log(`${key.padEnd(12)}: ${val}`);
+  });
+
+  // 5. Pie de reporte
+  console.log("\nTotal de pacientes:", items.length);
+  console.log("=".repeat(40));
 };
+
 
 // ============================================
 // SECCIÓN 6: Ejecución Principal
 // ============================================
-//
-// TODO: Descomentar a medida que implementes cada función
-//
 
 console.log("=".repeat(40));
 console.log(`  ${DOMAIN_NAME.toUpperCase()}`);
@@ -193,33 +239,33 @@ console.log(`Total de ${VALUE_LABEL}: ${items.length} / ${MAX_ITEMS}`);
 console.log("");
 
 // Paso 1: Buscar por id
-// const found = findById(1);
-// console.log("Encontrado id=1:", found?.name ?? "no encontrado");
-// console.log("");
+const found = findById(1);
+console.log("Encontrado id=1:", found?.name ?? "no encontrado");
+console.log("");
 
 // Paso 2: Listar activos
-// const active = getActive();
-// console.log(`Activos: ${active.length}`);
-// active.forEach(item => console.log(" ", formatItem(item)));
-// console.log("");
+const active = getActive();
+console.log(`Activos: ${active.length}`);
+active.forEach(item => console.log(" ", formatItem(item)));
+console.log("");
 
-// Paso 3: Filtrar por campo
-// const filtered = filterByField("category", "tipo-a");
-// console.log(`Filtro category=tipo-a: ${filtered.length} resultados`);
-// console.log("");
+// Paso 3: Filtrar por campo (ejemplo: pacientes atendidos por Dr. Esteban)
+const filtered = filterByField("therapist", "Dr. Esteban");
+console.log(`Filtro therapist=Dr. Esteban: ${filtered.length} resultados`);
+filtered.forEach(item => console.log(" ", formatItem(item)));
+console.log("");
 
-// Paso 4: Actualizar con spread
-// const updated = updateItem(1, { value: 999 });
-// console.log(`Actualizado id=1: value=${updated.find(i => i.id === 1)?.value}`);
-// console.log("");
+// Paso 4: Actualizar con spread (ejemplo: progreso del paciente id=2)
+const updated = updateItem(2, { progressLevel: 6 });
+console.log(`Actualizado id=2: progreso=${updated.find(i => i.id === 2)?.progressLevel}`);
+console.log("");
 
-// Paso 5: Estadísticas
-// const stats = calculateStats("value");
-// console.log(`Estadísticas (value): min=${stats.min} max=${stats.max} avg=${stats.avg.toFixed(2)}`);
-// console.log("");
+// Paso 5: Estadísticas (ejemplo: sobre progressLevel)
+const stats = calculateStats("progressLevel");
+console.log(`Estadísticas (progressLevel): min=${stats.min} max=${stats.max} avg=${stats.avg.toFixed(2)} total=${stats.total}`);
+console.log("");
 
 // Paso 6: Reporte completo
-// buildReport();
+buildReport();
 
-// TODO: Agregar un nuevo elemento usando addItem
-// addItem({ id: 7, name: "Nuevo elemento", value: 300, active: true, category: "tipo-a" });
+// Paso 7: Agregar un nuevo paciente
