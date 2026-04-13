@@ -23,7 +23,7 @@
 const elementName = "Juan perez"         // TODO: nombre del elemento (string)
 const elementStatus = "Active"        // TODO: estado actual (string: "active", "inactive", etc.)
 const elementValue =   7       // TODO: valor numérico para clasificar (ocupación, stock, puntaje…)
-const elementType =  "Paciente"       // TODO: tipo o categoría (string)
+const elementType =  "paciente"       // TODO: tipo o categoría (string)
 const elementInfo =  {age: 29,
   diagnosis: "ansiedad generalizada",
   lastSession: "2026-04-01",
